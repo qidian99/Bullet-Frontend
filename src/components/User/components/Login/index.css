@@ -1,0 +1,32 @@
+.user .login-main {
+  width: 368px;
+  margin: 0 auto;
+}
+@media screen and (max-width: 576px) {
+  .user .login-main {
+    width: 95%;
+  }
+}
+.user .login-main .icon {
+  margin-left: 16px;
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.user .login-main .icon:hover {
+  color: #1890ff;
+}
+.user .login-main .other {
+  margin-top: 24px;
+  line-height: 22px;
+  text-align: left;
+}
+.user .login-main .other .register {
+  float: right;
+}
+.user .login-main .antd-pro-login-submit {
+  width: 100%;
+  margin-top: 24px;
+}

@@ -1,0 +1,20 @@
+.menu .anticon {
+  margin-right: 8px;
+}
+.menu .ant-dropdown-menu-item {
+  min-width: 160px;
+}
+
+.dropDown {
+  line-height: 64px;
+  vertical-align: top;
+  cursor: pointer;
+}
+.dropDown > span {
+  font-size: 16px !important;
+  transform: none !important;
+}
+.dropDown > span svg {
+  position: relative;
+  top: -1px;
+}

@@ -1,0 +1,15 @@
+.account-settings .row .item {
+  width: 50%;
+  max-width: 220px;
+}
+.account-settings .row .item:first-child {
+  width: calc(50% - 8px);
+  margin-right: 8px;
+}
+
+@media screen and (max-width: 576px) {
+  .account-settings .item:first-child {
+    margin: 0;
+    margin-bottom: 8px;
+  }
+}

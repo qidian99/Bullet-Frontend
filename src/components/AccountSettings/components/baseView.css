@@ -1,0 +1,53 @@
+.account-settings .baseView {
+  display: flex;
+  padding-top: 12px;
+}
+
+.account-settings .baseView .left {
+  min-width: 224px;
+  max-width: 448px;
+}
+.account-settings .baseView .right {
+  flex: 1;
+  padding-left: 104px;
+}
+.account-settings .baseView .right .avatar_title {
+  height: 22px;
+  margin-bottom: 8px;
+  color: fade(#000, 85%);
+  font-size: 14px;
+  line-height: 22px;
+}
+.account-settings .baseView .right .avatar {
+  width: 144px;
+  height: 144px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.account-settings .baseView .right .avatar > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.account-settings .baseView .right .button_view {
+  width: 144px;
+  text-align: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .account-settings .baseView {
+    flex-direction: column-reverse;
+  }
+
+  .account-settings .baseView .right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 448px;
+    padding: 20px;
+  }
+
+  .account-settings .baseView .right .avatar_title {
+    display: none;
+  }
+}

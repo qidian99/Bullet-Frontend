@@ -1,0 +1,86 @@
+.menu .anticon {
+  margin-right: 8px;
+}
+.menu .ant-dropdown-menu-item {
+  min-width: 160px;
+}
+
+.header-right {
+  display: flex;
+  float: right;
+  height: 64px;
+  margin-left: auto;
+  overflow: hidden;
+}
+.header-right .action {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.header-right .action > span {
+  color: rgba(0, 0, 0, 0.65);
+  vertical-align: middle;
+}
+.header-right .action:hover {
+  background: rgba(0, 0, 0, 0.025);
+}
+.header-right .action .opened {
+  background: rgba(0, 0, 0, 0.025);
+}
+.header-right .search {
+  padding: 0 12px;
+}
+.header-right .search:hover {
+  background: transparent;
+}
+.header-right .account .avatar {
+  margin: 20px 0;
+  margin-right: 8px;
+  color: #1890ff;
+  vertical-align: top;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.dark .action {
+  color: rgba(255, 255, 255, 0.85);
+}
+.dark .action > span {
+  color: rgba(255, 255, 255, 0.85);
+}
+.dark .action:hover,
+.dark .action .opened {
+  background: #1890ff;
+}
+
+.ant-pro-global-header .dark .action > span {
+  color: rgba(0, 0, 0, 0.65);
+}
+.ant-pro-global-header .dark .action:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+.ant-pro-global-header .dark .action:hover > span {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@media only screen and (max-width: 768px) {
+  .ant-divider-vertical {
+    vertical-align: unset;
+  }
+  .name {
+    display: none;
+  }
+  .header-right {
+    position: absolute;
+    top: 0;
+    right: 12px;
+  }
+  .header-right .account .avatar {
+    margin-right: 0;
+  }
+  .header-right .search {
+    display: none;
+  }
+}

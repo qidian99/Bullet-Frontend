@@ -1,0 +1,199 @@
+.pageHeaderContent {
+  display: flex;
+  flex: auto;
+}
+.pageHeaderContent .avatar {
+  flex: 0 1 72px;
+}
+.pageHeaderContent .avatar > span {
+  display: block;
+  width: 72px;
+  height: 72px;
+  border-radius: 72px;
+}
+.pageHeaderContent .content {
+  position: relative;
+  top: 4px;
+  flex: 1 1 auto;
+  margin-left: 24px;
+  color: rgba(0, 0, 0, 0.45);
+  line-height: 22px;
+}
+.pageHeaderContent .content .contentTitle {
+  margin-bottom: 12px;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.extraContent {
+  zoom: 1;
+  white-space: nowrap;
+  text-align: right;
+}
+.extraContent::before,
+.extraContent::after {
+  display: table;
+  content: ' ';
+}
+.extraContent::after {
+  clear: both;
+  height: 0;
+  font-size: 0;
+  visibility: hidden;
+}
+.extraContent .statItem {
+  position: relative;
+  display: inline-block;
+  padding: 0 32px;
+}
+.extraContent .statItem::after {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  width: 1px;
+  height: 40px;
+  background-color: #e8e8e8;
+  content: '';
+}
+.extraContent .statItem:last-child {
+  padding-right: 0;
+}
+.extraContent .statItem:last-child::after {
+  display: none;
+}
+
+.members a {
+  display: block;
+  height: 24px;
+  margin: 12px 0;
+  color: rgba(0, 0, 0, 0.65);
+  transition: all 0.3s;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+.members a .member {
+  margin-left: 12px;
+  font-size: 14px;
+  line-height: 24px;
+  vertical-align: top;
+}
+.members a .member:hover {
+  color: #1890ff;
+}
+
+.dealList .ant-card-meta-description {
+  height: 44px;
+  overflow: hidden;
+  color: rgba(0, 0, 0, 0.45);
+  line-height: 22px;
+}
+.dealList .cardTitle {
+  font-size: 0;
+}
+.dealList .cardTitle a {
+  display: inline-block;
+  height: 24px;
+  margin-left: 12px;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 24px;
+  vertical-align: top;
+}
+.dealList .cardTitle a:hover {
+  color: #1890ff;
+}
+.dealList .projectGrid {
+  width: 33.33%;
+}
+.dealList .projectItemContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  height: 20px;
+  margin-top: 8px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 20px;
+}
+.dealList .projectItemContent .datetime {
+  flex: 0 0 auto;
+  float: right;
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.datetime {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.ordersList {
+  padding: 0 24px 8px 24px !important;
+}
+.ordersList .ant-descriptions-row > td {
+  padding-bottom: 4px;
+}
+
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+  .activeCard {
+    margin-bottom: 24px;
+  }
+  .members {
+    margin-bottom: 0;
+  }
+  .extraContent .statItem {
+    padding: 0 16px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .activeCard {
+    margin-bottom: 24px;
+  }
+  .members {
+    margin-bottom: 0;
+  }
+  .extraContent {
+    float: none;
+    margin-right: 0;
+  }
+  .extraContent .statItem {
+    padding: 0 16px;
+    text-align: left;
+  }
+  .extraContent .statItem::after {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .activeCard {
+    margin-bottom: 24px;
+  }
+  .extraContent {
+    margin-left: -16px;
+  }
+  .dealList .projectGrid {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .pageHeaderContent {
+    display: block;
+  }
+  .pageHeaderContent .content {
+    margin-left: 0;
+  }
+  .extraContent .statItem {
+    float: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .dealList .projectGrid {
+    width: 100%;
+  }
+}

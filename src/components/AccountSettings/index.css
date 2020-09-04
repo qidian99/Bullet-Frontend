@@ -1,0 +1,96 @@
+.account-settings .main {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  overflow: auto;
+  background-color: #fff;
+}
+.account-settings .main .leftMenu {
+  width: 224px;
+  border-right: 1px solid #e8e8e8;
+}
+.account-settings .main .leftMenu .ant-menu-inline {
+  border: none;
+}
+.account-settings
+  .main
+  .leftMenu
+  .ant-menu:not(.ant-menu-horizontal)
+  .ant-menu-item-selected {
+  font-weight: bold;
+}
+
+.account-settings .main .right {
+  flex: 1;
+  padding: 8px 40px;
+}
+.account-settings .main .right .title {
+  margin-bottom: 12px;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.account-settings .main .ant-list-split .ant-list-item:last-child {
+  border-bottom: 1px solid #e8e8e8;
+}
+.account-settings .main .ant-list-item {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.ant-list-item-meta .google {
+  display: block;
+  color: #DB4437;
+  font-size: 48px;
+  line-height: 48px;
+  border-radius: 4px;
+}
+.ant-list-item-meta .taobao {
+  display: block;
+  color: #ff4000;
+  font-size: 48px;
+  line-height: 48px;
+  border-radius: 2px;
+}
+.ant-list-item-meta .dingding {
+  margin: 2px;
+  padding: 6px;
+  color: #fff;
+  font-size: 32px;
+  line-height: 32px;
+  background-color: #2eabff;
+  border-radius: 2px;
+}
+.ant-list-item-meta .alipay {
+  color: #2eabff;
+  font-size: 48px;
+  line-height: 48px;
+  border-radius: 2px;
+}
+
+font.strong {
+  color: #52c41a;
+}
+font.medium {
+  color: #faad14;
+}
+font.weak {
+  color: #f5222d;
+}
+
+@media screen and (max-width: 768px) {
+  .account-settings .main {
+    flex-direction: column;
+  }
+  .account-settings .main .leftMenu {
+    width: 100%;
+    border: none;
+  }
+  .account-settings .main .right {
+    padding: 40px;
+  }
+}

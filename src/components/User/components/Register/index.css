@@ -1,0 +1,52 @@
+.user .register-main {
+  width: 368px;
+  margin: 0 auto;
+}
+
+.user .register-main h3 {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.user .register-main .password {
+  margin-bottom: 24px;
+}
+.user .register-main .password .ant-form-item-explain {
+  display: none;
+}
+
+.user .register-main .getCaptcha {
+  display: block;
+  width: 100%;
+}
+
+.user .register-main .submit {
+  width: 50%;
+}
+
+.user .register-main .login {
+  float: right;
+  line-height: 40px;
+}
+
+.user .success,
+.user .warning,
+.user .error {
+  transition: color 0.3s;
+}
+
+.user .success {
+  color: #52c41a;
+}
+
+.user .warning {
+  color: #faad14;
+}
+
+.user .error {
+  color: #f5222d;
+}
+
+.user .progress-pass > .progress .ant-progress-bg {
+  background-color: #faad14;
+}
