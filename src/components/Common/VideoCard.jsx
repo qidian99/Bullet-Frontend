@@ -39,10 +39,10 @@ const BulletPreview = ({
 
 const VideoCard = ({
   card: {
-    videoId, videoName, bullets, videoAvatar, pathname,
+    videoId: resourceId, videoName, bullets, videoAvatar, pathname,
   },
 }) => (
-  <Link to={`${pathname}/video/${videoId}`}>
+  <Link to={`${pathname}/resource/${resourceId}`}>
     <Card.Grid className="card-container" style={{ padding: 0 }}>
       <div className="video-card-container">
         <div className="video-card-image">

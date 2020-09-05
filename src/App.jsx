@@ -72,7 +72,7 @@ const App = () => (
           <ProtectedRoute path="/account/center" component={AccountCenter} />
           <ProtectedRoute path="/account/settings" component={AccountSettings} />
           <ProtectedRoute path="/room/:roomId" exact component={Room} />
-          <ProtectedRoute path="/test" exact component={VideoBullets} />
+          <ProtectedRoute path="/room/:roomId/resource/:resourceId" exact component={VideoBullets} />
         </Router>
       </ApolloProvider>
     </PersistGate>

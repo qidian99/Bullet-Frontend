@@ -23,7 +23,7 @@ class AvatarDropdown extends React.Component {
       }
       sessionStorage.removeItem('authToken');
       sessionStorage.removeItem('refreshToken');
-      history.push('/user/login');
+      history.push('/user');
       return;
     }
     history.push(`/account/${key}`);

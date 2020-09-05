@@ -346,7 +346,7 @@ const Register = ({
           >
             <FormattedMessage id="userandregister.register.register" />
           </Button>
-          <Link className="login" to="/user/login">
+          <Link className="login" to="/user">
             <FormattedMessage id="userandregister.register.sign-in" />
           </Link>
         </FormItem>

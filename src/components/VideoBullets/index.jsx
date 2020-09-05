@@ -4,8 +4,22 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
+import { Tooltip } from 'antd';
+import { formatTime, Spinner } from '../Common';
 
 import './index.scss';
+
+function pad(num) {
+  return (`0${num}`).slice(-2);
+}
+function hhmmss(secs) {
+  let minutes = Math.floor(secs / 60);
+  secs %= 60;
+  const hours = Math.floor(minutes / 60);
+  minutes %= 60;
+  const result = secs < 3600 ? `${pad(minutes)}:${pad(secs)}` : `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
+  return result;
+}
 
 const BulletRow = ({
   time, name, text, connector = true,
@@ -28,50 +42,53 @@ class VideoBullets extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
-      alias: '',
     };
   }
 
   render() {
-    const { isOpen } = this.state;
-    // const { currentUser: { friends } } = this.props;
-
+    const { allBulletsInResource = [], loading } = this.props;
     return (
       <div className="video-bullets-container">
-        <BulletRow
-          time="1:05"
-          name="EnqiZhang"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        />
-        <BulletRow
-          time="1:05"
-          name="EnqiZhang"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        />
-        <BulletRow
-          time="1:05"
-          name="EnqiZhang"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-          connector={false}
-        />
+        {loading ? <Spinner />
+          : (
+            <div>
+              {
+          allBulletsInResource.slice().reverse().map((bullet, index) => {
+            const connector = index !== allBulletsInResource.length - 1;
+            return (
+              <Tooltip placement="topLeft" arrowPointAtCenter title={<div>{formatTime(bullet.createdAt)}</div>}>
+                <BulletRow
+                  time={hhmmss(bullet.timestamp)}
+                  name={bullet.user.username}
+                  text={bullet.content}
+                  connector={connector}
+                />
+                <div />
+              </Tooltip>
+            );
+          })
+        }
+            </div>
+          )}
       </div>
     );
   }
 }
 
 const BULLETS_QUERY = gql`
-  query Bullets($roomId: ID!, $source: String!) {
-    allBulletsInVideo(roomId: $roomId, source: $source) {
+  query allBulletsInResource($roomId: ID!, $resourceId: ID!) {
+    allBulletsInResource(roomId: $roomId, resourceId: $resourceId) {
       bulletId
       user {
         username
       }
       timestamp
       content
+      source
+      createdAt
     }
   }
-`
+`;
 
 export default compose(
   withRouter,
@@ -82,16 +99,19 @@ export default compose(
     }),
   })),
   graphql(BULLETS_QUERY, {
-    options: () => ({
-      variables: {
-        roomId: 'test',
-        source: 'test',
-      },
-    }),
-    props: ({ data: { allBulletsInVideo, loading, refetch } }) => ({
-      loading,
-      bullets: allBulletsInVideo,
-      refetch,
-    }),
+    options: (props) => (
+      {
+        variables: {
+          roomId: props.location.pathname.split('/')[2],
+          resourceId: props.location.pathname.split('/')[4],
+        },
+      }
+    ),
+    props: ({ data: { allBulletsInResource, loading, refetch } }) => (
+      {
+        loading,
+        allBulletsInResource,
+        refetch,
+      }),
   }),
 )(VideoBullets);

@@ -147,7 +147,7 @@ class BasicLayout extends React.Component {
 }
 
 export default connect(
-  ({ collapsed }) => ({ collapsed }),
+  ({ settings: { collapsed } }) => ({ collapsed }),
   (dispatch) => ({
     collapse: () => dispatch({ type: 'COLLAPSE' }),
     expand: () => dispatch({ type: 'EXPAND' }),
