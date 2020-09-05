@@ -12,3 +12,7 @@ body {
   padding: 0;
   margin: 0;
 }
+
+.ant-card-grid-hoverable {
+  cursor: pointer;
+}

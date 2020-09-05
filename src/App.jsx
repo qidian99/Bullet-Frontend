@@ -23,6 +23,7 @@ import BasicLayout from './components/BasicLayout';
 import User from './components/User';
 import Workplace from './components/Workplace';
 import Room from './components/Room';
+import VideoBullets from './components/VideoBullets';
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -71,6 +72,7 @@ const App = () => (
           <ProtectedRoute path="/account/center" component={AccountCenter} />
           <ProtectedRoute path="/account/settings" component={AccountSettings} />
           <ProtectedRoute path="/room/:roomId" exact component={Room} />
+          <ProtectedRoute path="/test" exact component={VideoBullets} />
         </Router>
       </ApolloProvider>
     </PersistGate>
