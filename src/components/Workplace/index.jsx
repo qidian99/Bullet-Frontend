@@ -20,7 +20,7 @@ import { compose } from 'redux';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import 'moment/locale/zh-cn';
-import RoomCard from '../Common/RoomCard';
+import { formatTime, RoomCard } from '../Common';
 import './index.css';
 
 class Workplace extends React.Component {
@@ -71,19 +71,20 @@ class Workplace extends React.Component {
 
   render() {
     const { rooms, loading } = this.props;
-    console.log(rooms, loading);
     const cards = [{}];
     cards.push(...rooms.map((r) => ({
       roomName: r.alias,
       roomId: r.roomId,
       members: r.users.length,
       roomAvatar: r.avatar,
-      lastUpdated: r.updatedAt,
+      lastUpdated: formatTime(r.updatedAt),
     })));
+    console.log(cards);
+
     return (
       <div className="container">
         <Row gutter={[16, 24]}>
-          {loading ? cards.map((card) => (
+          {!loading ? cards.map((card) => (
             <Col xl={8} lg={12} md={24} sm={24} xs={24}>
               <RoomCard card={card} />
             </Col>
@@ -121,6 +122,8 @@ const ROOMS_QUERY = gql`
       }
       public
       widgets
+      avatar
+      updatedAt
     }
   }
 
@@ -132,7 +135,7 @@ const mapStateToProps = ({ auth }) => ({ userId: auth.userId });
 export default compose(
   connect(mapStateToProps),
   graphql(ROOMS_QUERY, {
-    // options: (props) => ({ variables: { userId: props.userId } }),
+    options: (props) => ({ variables: { userId: props.userId } }),
     props: ({ data }) => {
       console.log('data', data);
       return {

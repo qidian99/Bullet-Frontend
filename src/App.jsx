@@ -32,69 +32,15 @@ const httpLink = new HttpLink({
   uri: 'http://localhost:4000/graphql'
 });
 
-const afterwareLink = new ApolloLink((operation, forward) => forward(operation).map((response) => {
-  // const { response: { headers } } = operation.getContext();
-
-  // if (headers) {
-  //   const authorizationToken = headers.get('authorizationToken');
-  //   if (authorizationToken) {
-  //     localStorage.setItem('authorizationToken', authorizationToken);
-  //   }
-  // }
-
-  return response;
-}));
-
-// using the ability to split links, you can send data to each link
-// depending on what kind of operation is being sent
-const link = split(
-  // split based on operation type
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition'
-      && definition.operation === 'subscription'
-    );
-  },
-  afterwareLink.concat(httpLink),
-);
-
 const cache = new InMemoryCache({
   dataIdFromObject: (object) => object[`${object.__typename.toLowerCase()}Id`],
 });
 
-const request = async (operation) => {
-  // const authorizationToken = sessionStorage.getItem('authorizationToken');
-  operation.setContext({
-    headers: {
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InFpZGlhbiIsImlhdCI6MTU5OTI1NDc3NiwiZXhwIjoxNjAyODU0Nzc2fQ.oH9mG3e5xMenQwmel6LtsvSBxBkGxEd0GJd03IlKpkI',
-    },
-  });
-};
-
 const authLink = setContext((_, { headers }) => ({
   headers: {
     ...headers,
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InFpZGlhbiIsImlhdCI6MTU5OTI1NDc3NiwiZXhwIjoxNjAyODU0Nzc2fQ.oH9mG3e5xMenQwmel6LtsvSBxBkGxEd0GJd03IlKpkI',
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlZXJsZXNzMDciLCJpYXQiOjE1OTkyNTQ3NjYsImV4cCI6MTYwMjg1NDc2Nn0.Qz-9D3CbhjMcOP-uIfRiRDkoksJIXLVtGftdyiga-LU',
   },
-}));
-
-const requestLink = new ApolloLink((operation, forward) => new Observable((observer) => {
-  let handle;
-  Promise.resolve(operation)
-    .then((oper) => request(oper))
-    .then(() => {
-      handle = forward(operation).subscribe({
-        next: observer.next.bind(observer),
-        error: observer.error.bind(observer),
-        complete: observer.complete.bind(observer),
-      });
-    })
-    .catch(observer.error.bind(observer));
-
-  return () => {
-    if (handle) handle.unsubscribe();
-  };
 }));
 
 const client = new ApolloClient({
