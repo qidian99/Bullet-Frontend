@@ -26,6 +26,8 @@ import AccountSettings from './components/AccountSettings';
 import BasicLayout from './components/BasicLayout';
 import User from './components/User';
 import Workplace from './components/Workplace';
+import VideoBullets from './components/VideoBullets';
+
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -73,6 +75,7 @@ const App = () => (
           <ProtectedRoute path="/" exact component={Workplace} />
           <ProtectedRoute path="/account/center" component={AccountCenter} />
           <ProtectedRoute path="/account/settings" component={AccountSettings} />
+          <ProtectedRoute path="/video" component={VideoBullets} />
         </Router>
       </ApolloProvider>
     </PersistGate>

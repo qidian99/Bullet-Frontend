@@ -22,3 +22,7 @@ export const formatTime = (unixTime) => {
 
   return moment(time).format('YYYY-MM-DD HH:mm');
 };
+
+export { default as CustomModal } from './CustomModal/index';
+export { default as DropDownSelect } from './CustomModal/DropDownSelect';
+export { default as FormInput } from './CustomModal/FormInput';
