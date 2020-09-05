@@ -15,21 +15,6 @@ import { ReactComponent as LockIcon } from '../../../../assets/lock.svg';
 
 import './index.scss';
 
-const {
-  Tab, UserName, Password, Mobile, Captcha, Submit,
-} = LoginFrom;
-
-const LoginMessage = ({ content }) => (
-  <Alert
-    style={{
-      marginBottom: 24,
-    }}
-    message={content}
-    type="error"
-    showIcon
-  />
-);
-
 export const FormInput = ({
   name, value, onChange, placeholder, type = 'text',
 }) => (
@@ -72,6 +57,7 @@ const Login = (props) => {
       console.log('signin', email, password);
       login(values)
         .then(({ data: { login: { user, token } } }) => {
+          console.log('signin success', email, password);
           setsubmitting(false);
           sessionStorage.setItem('Authorization', token);
           loginUser(user.userId);

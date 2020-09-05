@@ -23,6 +23,7 @@ import BasicLayout from './components/BasicLayout';
 import User from './components/User';
 import Workplace from './components/Workplace';
 import Room from './components/Room';
+import VideoBullets from './components/VideoBullets';
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -36,7 +37,7 @@ const cache = new InMemoryCache({
 const authLink = setContext((_, { headers }) => ({
   headers: {
     ...headers,
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlZXJsZXNzMDciLCJpYXQiOjE1OTkyNTQ3NjYsImV4cCI6MTYwMjg1NDc2Nn0.Qz-9D3CbhjMcOP-uIfRiRDkoksJIXLVtGftdyiga-LU',
+    Authorization: sessionStorage.getItem('Authorization') ? `Bearer ${sessionStorage.getItem('Authorization')}` : '',
   },
 }));
 
@@ -71,6 +72,7 @@ const App = () => (
           <ProtectedRoute path="/account/center" component={AccountCenter} />
           <ProtectedRoute path="/account/settings" component={AccountSettings} />
           <ProtectedRoute path="/room/:roomId" exact component={Room} />
+          <ProtectedRoute path="/video" component={VideoBullets} />
         </Router>
       </ApolloProvider>
     </PersistGate>
