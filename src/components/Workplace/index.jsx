@@ -1,92 +1,46 @@
 import React from 'react';
 import {
-  Avatar,
   Row,
   Col,
-  Statistic,
-  PageHeader,
-  Card,
-  Radio,
-  List,
-  Skeleton,
-  Empty,
-  Button,
 } from 'antd';
 import { connect } from 'react-redux';
-import _ from 'lodash';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import 'moment/locale/zh-cn';
-import { formatTime, RoomCard } from '../Common';
+import { formatTime } from '../Common';
+import RoomCard from '../Common/RoomCard';
+import AddCard from '../Common/AddCard';
 import './index.css';
 
 class Workplace extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      key: 'all',
-    };
+    this.state = {};
   }
 
-  getFilteredOrders = (deals) => {
-    const { key } = this.state;
-    let orders = _.flatten(_.map(deals, 'orders'));
-    if (key !== 'all') {
-      orders = _.filter(orders, { status: 'REFUND_REQUESTED' });
-    }
-    return _.orderBy(orders, ['endedAt'], ['desc']).slice(0, 6);
-  };
-
-  renderActivities = (order) => {
-    const events = _
-      .chain(order.items)
-      .map((item) => `${item.name} X ${item.numOrdered}`)
-      .join(', ')
-      .value();
-    return (
-      <List.Item key={order.orderId}>
-        <List.Item.Meta
-          avatar={<Avatar src={order.customer.avatar} />}
-          title={(
-            <span>
-              <a className="username">{order.customer.username}</a>
-              &nbsp;
-              {order.status === 'REFUND_REQUESTED' ? '退订了' : '订购了'}
-              &nbsp;
-              <span className="event">{events}</span>
-            </span>
-          )}
-          description={(
-            <span className="datetime" title={order.createdAt}>
-              {moment(order.createdAt).fromNow()}
-            </span>
-          )}
-        />
-      </List.Item>
-    );
-  };
+  onAddCardClick = () => {
+    alert('Add new room');
+  }
 
   render() {
     const { rooms, loading } = this.props;
-    const cards = [{}];
-    cards.push(...rooms.map((r) => ({
+    const cards = rooms.map((r) => ({
       roomName: r.alias,
       roomId: r.roomId,
       members: r.users.length,
       roomAvatar: r.avatar,
+      roomPublic: r.public,
       lastUpdated: formatTime(r.updatedAt),
-    })));
-    console.log(cards);
+    }));
+    cards.push({});
 
     return (
       <div className="container">
         <Row gutter={[16, 24]}>
           {!loading ? cards.map((card) => (
             <Col xl={8} lg={12} md={24} sm={24} xs={24}>
-              <RoomCard card={card} />
+              {card.roomId ? <RoomCard card={card} /> : <AddCard onClick={this.onAddCardClick} />}
             </Col>
           )) : null}
         </Row>
@@ -136,12 +90,9 @@ export default compose(
   connect(mapStateToProps),
   graphql(ROOMS_QUERY, {
     options: (props) => ({ variables: { userId: props.userId } }),
-    props: ({ data }) => {
-      console.log('data', data);
-      return {
-        rooms: data.allRooms || [],
-        loading: data.loading,
-      };
-    },
+    props: ({ data: { allRooms, loading } }) => ({
+      rooms: allRooms || [],
+      loading,
+    }),
   }),
 )(Workplace);

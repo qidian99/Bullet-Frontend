@@ -4,7 +4,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import gql from 'graphql-tag';
 import { compose } from 'redux';
 import { graphql, withApollo } from 'react-apollo';
-import { MenuCreateForm, MenuItemTable } from '../../../Common';
 import { RESTAURANT_QUERY } from '../../queries';
 
 class MenuTable extends React.Component {
@@ -68,7 +67,7 @@ class MenuTable extends React.Component {
             新建
           </Button>
         </div>
-        <MenuItemTable menuItems={items} actions={actions} />
+        {/* <MenuItemTable menuItems={items} actions={actions} />
         <MenuCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={modalVisible}
@@ -76,7 +75,7 @@ class MenuTable extends React.Component {
           onCreate={this.handleCreate}
           userId={restaurantId}
           menuItem={menuItem}
-        />
+        /> */}
       </div>
     );
   }

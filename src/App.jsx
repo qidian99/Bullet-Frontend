@@ -4,13 +4,9 @@ import { ApolloProvider } from 'react-apollo';
 
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { onError } from 'apollo-link-error';
-import { withClientState } from 'apollo-link-state';
-import { ApolloLink, Observable, split } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 
 import { HttpLink } from 'apollo-link-http';
-import { getMainDefinition } from 'apollo-utilities';
 
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -26,10 +22,11 @@ import AccountSettings from './components/AccountSettings';
 import BasicLayout from './components/BasicLayout';
 import User from './components/User';
 import Workplace from './components/Workplace';
+import Room from './components/Room';
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql'
+  uri: 'http://localhost:4000/graphql',
 });
 
 const cache = new InMemoryCache({
@@ -51,7 +48,7 @@ const client = new ApolloClient({
 const ProtectedRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
-    render={({ location }) => (sessionStorage.getItem('authToken') ? (
+    render={({ location }) => (true ? (
       <BasicLayout component={component} />
     ) : (
       <Redirect
@@ -73,6 +70,7 @@ const App = () => (
           <ProtectedRoute path="/" exact component={Workplace} />
           <ProtectedRoute path="/account/center" component={AccountCenter} />
           <ProtectedRoute path="/account/settings" component={AccountSettings} />
+          <ProtectedRoute path="/room/:roomId" exact component={Room} />
         </Router>
       </ApolloProvider>
     </PersistGate>
