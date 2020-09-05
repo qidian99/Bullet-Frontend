@@ -113,8 +113,6 @@ class AccountSettings extends Component {
 
   render() {
     const { mode, selectKey } = this.state;
-    // const { currentUser, currentUserLoading } = this.props;
-    // const dataLoading = currentUserLoading || !(currentUser && Object.keys(currentUser).length);
     return (
       <div className="account-settings">
         <div
@@ -146,20 +144,12 @@ class AccountSettings extends Component {
   }
 }
 
-const RESTAURANT_QUERY = gql`
-  {
-    getCurrUser {
-      ... on Restaurant {
-        restaurantId
-        avatar
-        address
-        restaurantName
-        firstName
-        lastName
-        email
-        phone
-        signature
-      }
+const CURRENT_USER_QUERY = gql`
+  query currentUser {
+    currentUser {
+      userId
+      username
+      avatar
     }
   }
 `;
@@ -210,10 +200,10 @@ const UPDATE_AVATAR = gql`
 `;
 
 export default compose(
-  graphql(RESTAURANT_QUERY, {
-    props: ({ data: { getCurrUser, loading } }) => ({
-      currentUser: getCurrUser,
-      currentUserLoading: loading,
+  graphql(CURRENT_USER_QUERY, {
+    props: ({ data: { currentUser, loading } }) => ({
+      currentUser,
+      loading,
     }),
   }),
   graphql(UPDATE_RESTAURANT, {
