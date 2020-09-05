@@ -21,11 +21,13 @@ class Room extends React.Component {
   render() {
     const { videos, loading, location: { pathname } } = this.props;
 
+    console.log(videos)
+
     const cards = videos.map((v) => ({
-      videoName: v.source,
-      videoId: v.source,
+      videoName: v.resource.name,
+      videoId: v.resource.resourceId,
       bullets: v.bullets,
-      lastUpdated: formatTime(v.createdAt),
+      lastUpdated: formatTime(v.updatedAt),
       pathname,
     }));
     cards.push({});
@@ -46,8 +48,11 @@ class Room extends React.Component {
 
 const VIDEO_QUERY = gql`
   query getVideos($roomId: ID!) {
-    videoTeasersInRoom(roomId: $roomId) {
-      source
+    resourceTeasersInRoom(roomId: $roomId) {
+      resource {
+        resourceId
+        name
+      }
       bullets {
         bulletId
         user {
@@ -67,8 +72,8 @@ export default compose(
   connect(mapStateToProps),
   graphql(VIDEO_QUERY, {
     options: (props) => ({ variables: { roomId: props.location.pathname.split('/')[2] } }),
-    props: ({ data: { videoTeasersInRoom, loading } }) => ({
-      videos: videoTeasersInRoom || [],
+    props: ({ data: { resourceTeasersInRoom, loading } }) => ({
+      videos: resourceTeasersInRoom || [],
       loading,
     }),
   }),
