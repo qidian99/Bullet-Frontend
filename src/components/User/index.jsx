@@ -3,7 +3,6 @@ import { Layout } from 'antd';
 import { Route } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
-import ForgetPassword from './components/ForgetPassword';
 import './index.css';
 
 const { Footer, Content } = Layout;
@@ -20,9 +19,6 @@ const User = ({ match: { path } }) => (
       </Route>
       <Route path={`${path}/register`}>
         <Register />
-      </Route>
-      <Route path={`${path}/forgetPassword`}>
-        <ForgetPassword />
       </Route>
     </Content>
     <Footer />

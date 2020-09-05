@@ -20,7 +20,7 @@ const { Header, Sider, Content } = Layout;
 const routes = [
   {
     path: '/',
-    name: 'Workplace',
+    name: 'Dashboard',
     icon: <DashboardOutlined />,
   },
   {

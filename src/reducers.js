@@ -5,7 +5,7 @@ import storage from 'redux-persist/lib/storage';
 const authReducer = (state = {}, action) => {
   switch (action.type) {
     case 'LOGIN_USER':
-      return { restaurantId: action.restaurantId };
+      return { userId: action.userId };
     default:
       return state;
   }
