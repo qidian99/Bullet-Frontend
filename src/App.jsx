@@ -27,6 +27,7 @@ import BasicLayout from './components/BasicLayout';
 import User from './components/User';
 import Workplace from './components/Workplace';
 import VideoBullets from './components/VideoBullets';
+import ModalView from './components/CreateRoomModal';
 
 
 // Create an http link:
@@ -72,6 +73,7 @@ const App = () => (
       <ApolloProvider client={client}>
         <Router>
           <Route path="/user" exact component={User} />
+          <Route path="/modalview" exact component={ModalView} />
           <ProtectedRoute path="/" exact component={Workplace} />
           <ProtectedRoute path="/account/center" component={AccountCenter} />
           <ProtectedRoute path="/account/settings" component={AccountSettings} />
