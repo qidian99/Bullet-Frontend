@@ -7,9 +7,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 import { withClientState } from 'apollo-link-state';
 import { ApolloLink, Observable, split } from 'apollo-link';
+import { setContext } from 'apollo-link-context';
 
 import { HttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
 import { Provider } from 'react-redux';
@@ -29,36 +29,18 @@ import Workplace from './components/Workplace';
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/',
-  credentials: 'same-origin',
-});
-
-// Create a WebSocket link:
-const wsLink = new WebSocketLink({
-  uri: 'wss://tritonbyte-server.herokuapp.com/graphql',
-  options: {
-    reconnect: true,
-    connectionParams: {
-      authToken: sessionStorage.getItem('authToken'),
-      refreshToken: sessionStorage.getItem('refreshToken'),
-    },
-  },
+  uri: 'http://localhost:4000/graphql'
 });
 
 const afterwareLink = new ApolloLink((operation, forward) => forward(operation).map((response) => {
-  const { response: { headers } } = operation.getContext();
+  // const { response: { headers } } = operation.getContext();
 
-  if (headers) {
-    const refreshToken = headers.get('refreshToken');
-    const authToken = headers.get('authToken');
-
-    if (refreshToken) {
-      localStorage.setItem('refreshToken', refreshToken);
-    }
-    if (authToken) {
-      localStorage.setItem('authToken', authToken);
-    }
-  }
+  // if (headers) {
+  //   const authorizationToken = headers.get('authorizationToken');
+  //   if (authorizationToken) {
+  //     localStorage.setItem('authorizationToken', authorizationToken);
+  //   }
+  // }
 
   return response;
 }));
@@ -74,7 +56,6 @@ const link = split(
       && definition.operation === 'subscription'
     );
   },
-  wsLink,
   afterwareLink.concat(httpLink),
 );
 
@@ -83,17 +64,20 @@ const cache = new InMemoryCache({
 });
 
 const request = async (operation) => {
-  const authToken = sessionStorage.getItem('authToken');
-  const refreshToken = sessionStorage.getItem('refreshToken');
-  if (authToken && refreshToken) {
-    operation.setContext({
-      headers: {
-        authToken,
-        refreshToken,
-      },
-    });
-  }
+  // const authorizationToken = sessionStorage.getItem('authorizationToken');
+  operation.setContext({
+    headers: {
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InFpZGlhbiIsImlhdCI6MTU5OTI1NDc3NiwiZXhwIjoxNjAyODU0Nzc2fQ.oH9mG3e5xMenQwmel6LtsvSBxBkGxEd0GJd03IlKpkI',
+    },
+  });
 };
+
+const authLink = setContext((_, { headers }) => ({
+  headers: {
+    ...headers,
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InFpZGlhbiIsImlhdCI6MTU5OTI1NDc3NiwiZXhwIjoxNjAyODU0Nzc2fQ.oH9mG3e5xMenQwmel6LtsvSBxBkGxEd0GJd03IlKpkI',
+  },
+}));
 
 const requestLink = new ApolloLink((operation, forward) => new Observable((observer) => {
   let handle;
@@ -114,32 +98,7 @@ const requestLink = new ApolloLink((operation, forward) => new Observable((obser
 }));
 
 const client = new ApolloClient({
-  link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors) {
-        graphQLErrors.forEach(({ message, locations, path }) => console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-        ));
-      }
-      if (networkError) console.log(`[Network error]: ${networkError}`);
-    }),
-    requestLink,
-    withClientState({
-      defaults: {
-        isConnected: true,
-      },
-      resolvers: {
-        Mutation: {
-          updateNetworkStatus: (_, { isConnected }, { cache: localCache }) => {
-            localCache.writeData({ data: { isConnected } });
-            return null;
-          },
-        },
-      },
-      cache,
-    }),
-    link,
-  ]),
+  link: authLink.concat(httpLink),
   cache,
 });
 

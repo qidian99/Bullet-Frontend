@@ -32,8 +32,8 @@ class AvatarDropdown extends React.Component {
   render() {
     const {
       currentUser = {
-        avatar: '',
-        name: '',
+        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+        name: '黑龙鱼',
       },
       menu,
     } = this.props;
@@ -63,7 +63,7 @@ class AvatarDropdown extends React.Component {
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className="action account">
           <Avatar size="small" className="avatar" src={currentUser.avatar} alt="avatar" />
-          <span className="name">{currentUser.restaurantName}</span>
+          <span className="name">{currentUser.name}</span>
         </span>
       </HeaderDropdown>
     ) : (
@@ -85,13 +85,13 @@ const RESTAURANT_QUERY = gql`
 export default compose(
   withRouter,
   connect(({ auth: { restaurantId } }) => ({ restaurantId })),
-  graphql(RESTAURANT_QUERY, {
-    options: ({ restaurantId }) => ({
-      variables: { restaurantId },
-    }),
-    props: ({ data: { restaurant, loading } }) => ({
-      currentUser: restaurant,
-      currentUserLoading: loading,
-    }),
-  }),
+  // graphql(RESTAURANT_QUERY, {
+  //   options: ({ restaurantId }) => ({
+  //     variables: { restaurantId },
+  //   }),
+  //   props: ({ data: { restaurant, loading } }) => ({
+  //     currentUser: restaurant,
+  //     currentUserLoading: loading,
+  //   }),
+  // }),
 )(AvatarDropdown);

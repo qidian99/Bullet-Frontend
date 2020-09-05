@@ -154,7 +154,7 @@ const Register = ({
       </h3>
       <Form form={form} name="UserRegister" onFinish={onFinish}>
         <Form.Item
-          name="restaurantName"
+          name="userName"
           rules={[
             {
               required: true,
