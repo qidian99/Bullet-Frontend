@@ -10,44 +10,45 @@ import gql from 'graphql-tag';
 import 'moment/locale/zh-cn';
 import { formatTime } from '../Common';
 import VideoCard from '../Common/VideoCard';
-import AddCard from '../Common/AddCard';
 import './index.css';
+import ModalView from '../CreateVideoModal';
 
-class Room extends React.Component {
-  onAddCardClick = () => {
-    alert('Add new video');
-  }
 
-  render() {
-    const { videos, loading, location: { pathname } } = this.props;
+const Room = ({
+  videos, loading, location: { pathname }, refetch,
+}) => {
+  const roomId = pathname.split('/')[2];
+  const cards = videos.map((v) => ({
+    videoName: v.resource.name,
+    videoId: v.resource.resourceId,
+    bullets: v.bullets,
+    lastUpdated: formatTime(v.updatedAt),
+    pathname,
+  }));
+  cards.push({});
 
-    const cards = videos.map((v) => ({
-      videoName: v.source,
-      videoId: v.source,
-      bullets: v.bullets,
-      lastUpdated: formatTime(v.createdAt),
-      pathname,
-    }));
-    cards.push({});
-
-    return (
-      <div className="container">
-        <Row gutter={[16, 24]}>
-          {!loading ? cards.map((card) => (
-            <Col xl={8} lg={12} md={24} sm={24} xs={24}>
-              {card.videoId ? <VideoCard card={card} /> : <AddCard onClick={this.onAddCardClick} />}
-            </Col>
-          )) : null}
-        </Row>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="container">
+      <Row gutter={[16, 24]}>
+        {!loading ? cards.map((card) => (
+          <Col xl={8} lg={12} md={24} sm={24} xs={24}>
+            {card.videoId
+              ? <VideoCard card={card} />
+              : <ModalView roomId={roomId} refetch={refetch} />}
+          </Col>
+        )) : null}
+      </Row>
+    </div>
+  );
+};
 
 const VIDEO_QUERY = gql`
   query getVideos($roomId: ID!) {
-    videoTeasersInRoom(roomId: $roomId) {
-      source
+    resourceTeasersInRoom(roomId: $roomId) {
+      resource {
+        resourceId
+        name
+      }
       bullets {
         bulletId
         user {
@@ -67,9 +68,10 @@ export default compose(
   connect(mapStateToProps),
   graphql(VIDEO_QUERY, {
     options: (props) => ({ variables: { roomId: props.location.pathname.split('/')[2] } }),
-    props: ({ data: { videoTeasersInRoom, loading } }) => ({
-      videos: videoTeasersInRoom || [],
+    props: ({ data: { resourceTeasersInRoom, loading, refetch } }) => ({
+      videos: resourceTeasersInRoom || [],
       loading,
+      refetch,
     }),
   }),
 )(Room);

@@ -37,7 +37,7 @@ const cache = new InMemoryCache({
 const authLink = setContext((_, { headers }) => ({
   headers: {
     ...headers,
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlZXJsZXNzMDciLCJpYXQiOjE1OTkyNTQ3NjYsImV4cCI6MTYwMjg1NDc2Nn0.Qz-9D3CbhjMcOP-uIfRiRDkoksJIXLVtGftdyiga-LU',
+    Authorization: sessionStorage.getItem('Authorization') ? `Bearer ${sessionStorage.getItem('Authorization')}` : '',
   },
 }));
 

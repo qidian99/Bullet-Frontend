@@ -78,6 +78,7 @@ class BasicLayout extends React.Component {
 
   toggleCollapsed = () => {
     const { collapsed, collapse, expand } = this.props;
+    console.log(collapsed);
     if (collapsed) {
       expand();
     } else {
@@ -147,7 +148,7 @@ class BasicLayout extends React.Component {
 }
 
 export default connect(
-  ({ collapsed }) => ({ collapsed }),
+  ({ settings: { collapsed } }) => ({ collapsed }),
   (dispatch) => ({
     collapse: () => dispatch({ type: 'COLLAPSE' }),
     expand: () => dispatch({ type: 'EXPAND' }),

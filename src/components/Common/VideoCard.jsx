@@ -43,7 +43,7 @@ const VideoCard = ({
   },
 }) => (
   <Link to={`${pathname}/video/${videoId}`}>
-    <Card.Grid className="card-container" style={{ padding: 0 }}>
+    <Card.Grid className="card-container" style={{ padding: 0, height: 400 }}>
       <div className="video-card-container">
         <div className="video-card-image">
           <img

@@ -7,6 +7,8 @@ import { FormattedMessage, formatMessage } from '../../../locales';
 import PhoneView from './PhoneView';
 import './baseView.css';
 
+const DEFAULT_AVATAR = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
+
 const AvatarView = ({ avatar, onChange, userId }) => (
   <>
     <div className="avatar_title">
@@ -54,7 +56,7 @@ class BaseView extends Component {
       if (currentUser.avatar) {
         return currentUser.avatar;
       }
-      const url = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
+      const url = DEFAULT_AVATAR;
       return url;
     }
     return '';
@@ -93,7 +95,7 @@ class BaseView extends Component {
   };
 
   render() {
-    const { currentUser = { restaurantId: '' } } = this.props;
+    const { currentUser } = this.props;
     return (
       <div className="baseView" ref={this.getViewDom}>
         <div className="left">
@@ -114,25 +116,6 @@ class BaseView extends Component {
                   message: formatMessage(
                     {
                       id: 'accountandsettings.basic.email-message',
-                    },
-                    {},
-                  ),
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="restaurantName"
-              label={formatMessage({
-                id: 'accountandsettings.basic.nickname',
-              })}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage(
-                    {
-                      id: 'accountandsettings.basic.nickname-message',
                     },
                     {},
                   ),
@@ -224,7 +207,7 @@ class BaseView extends Component {
           <AvatarView
             avatar={this.getAvatarURL()}
             onChange={this.handleChange}
-            userId={currentUser.restaurantId}
+            userId={currentUser ? currentUser.userId : 'null'}
           />
         </div>
       </div>

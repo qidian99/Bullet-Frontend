@@ -9,6 +9,8 @@ import { withRouter } from 'react-router-dom';
 import HeaderDropdown from '../HeaderDropdown';
 import './index.css';
 
+const DEFAULT_AVATAR = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
+
 class AvatarDropdown extends React.Component {
   onMenuClick = (event) => {
     const { history } = this.props;
@@ -21,9 +23,8 @@ class AvatarDropdown extends React.Component {
           type: 'login/logout',
         });
       }
-      sessionStorage.removeItem('authToken');
-      sessionStorage.removeItem('refreshToken');
-      history.push('/user/login');
+      sessionStorage.removeItem('Authorization');
+      history.push('/user');
       return;
     }
     history.push(`/account/${key}`);
@@ -31,12 +32,11 @@ class AvatarDropdown extends React.Component {
 
   render() {
     const {
-      currentUser = {
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-        name: '黑龙鱼',
-      },
+      currentUser,
+      loading,
       menu,
     } = this.props;
+
     const menuHeaderDropdown = (
       <Menu className="menu" selectedKeys={[]} onClick={this.onMenuClick}>
         {menu && (
@@ -59,11 +59,11 @@ class AvatarDropdown extends React.Component {
         </Menu.Item>
       </Menu>
     );
-    return currentUser ? (
+    return !loading ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className="action account">
-          <Avatar size="small" className="avatar" src={currentUser.avatar} alt="avatar" />
-          <span className="name">{currentUser.name}</span>
+          <Avatar size="small" className="avatar" src={currentUser.avatar || DEFAULT_AVATAR} alt="avatar" />
+          <span className="name">{currentUser.username || 'Unknown'}</span>
         </span>
       </HeaderDropdown>
     ) : (
@@ -72,11 +72,11 @@ class AvatarDropdown extends React.Component {
   }
 }
 
-const RESTAURANT_QUERY = gql`
-  query Restaruant($restaurantId: ID!) {
-    restaurant(restaurantId: $restaurantId) {
-      restaurantId
-      restaurantName
+const CURRENT_USER_QUERY = gql`
+  query currentUser {
+    currentUser {
+      userId
+      username
       avatar
     }
   }
@@ -84,14 +84,11 @@ const RESTAURANT_QUERY = gql`
 
 export default compose(
   withRouter,
-  connect(({ auth: { restaurantId } }) => ({ restaurantId })),
-  // graphql(RESTAURANT_QUERY, {
-  //   options: ({ restaurantId }) => ({
-  //     variables: { restaurantId },
-  //   }),
-  //   props: ({ data: { restaurant, loading } }) => ({
-  //     currentUser: restaurant,
-  //     currentUserLoading: loading,
-  //   }),
-  // }),
+  connect(({ auth: { userId } }) => ({ userId })),
+  graphql(CURRENT_USER_QUERY, {
+    props: ({ data: { currentUser, loading } }) => ({
+      currentUser,
+      loading,
+    }),
+  }),
 )(AvatarDropdown);
