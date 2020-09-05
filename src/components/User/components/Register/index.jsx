@@ -9,6 +9,7 @@ import { graphql } from 'react-apollo';
 import { Link, withRouter } from 'react-router-dom';
 import './index.css';
 import { FormattedMessage, formatMessage } from '../../../../locales';
+import { FormInput } from '../Login';
 
 const FormItem = Form.Item;
 const { Option } = Select;

@@ -6,6 +6,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { Link, withRouter } from 'react-router-dom';
+import ReactCardFlip from 'react-card-flip';
+import ClipLoader from 'react-spinners/ClipLoader';
 import LoginFrom from './components/Login';
 
 import { ReactComponent as EmailIcon } from '../../../../assets/email.svg';
@@ -28,7 +30,7 @@ const LoginMessage = ({ content }) => (
   />
 );
 
-const FormInput = ({
+export const FormInput = ({
   name, value, onChange, placeholder, type = 'text',
 }) => (
   <input
@@ -41,53 +43,79 @@ const FormInput = ({
   />
 );
 
+const SubmitButton = ({ label, loading = true, onClick }) => (
+  <div className="submit-button login-button" onClick={onClick}>
+    {loading
+      ? <ClipLoader size={30} color="gray" />
+      : <input type="submit" value={label} className="submit" />}
+  </div>
+);
+
 const Login = (props) => {
   const [submitting, setsubmitting] = useState(false);
   const [status, setstatus] = useState('');
-  const [autoLogin, setAutoLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { history, isLogin, setIsLogin } = props;
+
   const handleSubmit = () => {
     const values = {
-      email,
+      username: email,
       password,
     };
-    const { signIn, loginUser, history } = props;
+    const { login, loginUser, signUp } = props;
     setsubmitting(true);
-    signIn(values)
-      .then(({ data: { signInRestaurant: { authToken, refreshToken, id } } }) => {
-        setsubmitting(false);
-        sessionStorage.setItem('authToken', authToken);
-        sessionStorage.setItem('refreshToken', refreshToken);
-        loginUser(id);
-        history.push('/');
-      })
-      .catch(() => {
-        setstatus('error');
-        setsubmitting(false);
-      });
+    console.log('in submit');
+
+    if (isLogin) {
+      console.log('signin', email, password);
+      login(values)
+        .then(({ data: { login: { user, token } } }) => {
+          setsubmitting(false);
+          sessionStorage.setItem('Authorization', token);
+          loginUser(user.userId);
+          history.push('/');
+        })
+        .catch(() => {
+          setstatus('error');
+          setsubmitting(false);
+        });
+    } else {
+      signUp(values)
+        .then(({ data: { createUser: { user, token } } }) => {
+          console.log(user, token);
+          setsubmitting(false);
+          sessionStorage.setItem('Authorization', token);
+          loginUser(user.userId);
+          history.push('/');
+        })
+        .catch((e) => {
+          console.log('loginerror', e);
+
+          setstatus('error');
+          setsubmitting(false);
+        });
+    }
+  };
+
+  const onClick = (e) => {
+    // e.preventDefault();
+    const login = !isLogin;
+    setIsLogin(login);
   };
 
   return (
     <div id="sign-in" className="login-main">
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="form-label">
           <EmailIcon className="icon" />
           <FormInput
             name="email"
             value={email}
-            onChange={(target) => setEmail(target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="用户名"
           />
-          {/* <input
-            type="text"
-            name="email"
-            value={email}
-            className="input-text"
-            onChange={(target) => setEmail(target.value)}
-            placeholder="用户名"
-          /> */}
         </div>
         <div className="form-label">
           <LockIcon className="icon" />
@@ -95,41 +123,62 @@ const Login = (props) => {
             type="password"
             name="password"
             value={password}
-            onChange={(target) => setPassword(target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="密码"
           />
-          {/* <input
-            type="password"
-            name="password"
-            value={password}
-            className="input-text"
-            onChange={setPassword}
-            placeholder="密码"
-          /> */}
         </div>
-        <div className="actions-container">
-          <div className="remember-me">
-            <input
-              name="remember"
-              type="checkbox"
-              checked={false}
-              className="check-box"
-              readOnly
-            />
-            自动登录
+        <div style={{ height: 40, marginBottom: 30 }}>
+          {isLogin && (
+          <div className="actions-container">
+            <div className="remember-me">
+              <input
+                name="remember"
+                type="checkbox"
+                checked={false}
+                className="check-box"
+                readOnly
+              />
+              自动登录
+            </div>
+            <div className="forgot-password">
+              <a>忘记密码</a>
+            </div>
           </div>
-          <div className="forgot-password">
-            <a>忘记密码</a>
-          </div>
+          )}
         </div>
+
         <div className="form-group">
-          <input type="submit" value="Sign In" className="submit-button login-button" />
+          <ReactCardFlip isFlipped={!isLogin} flipDirection="vertical">
+            <SubmitButton
+              label="Sign In"
+              loading={submitting}
+              onClick={handleSubmit}
+            />
+            <SubmitButton
+              label="Register"
+              loading={submitting}
+              onClick={handleSubmit}
+            />
+            {/* <input type="submit" value="Sign In" className="submit-button login-button" />
+            <input type="submit" value="Register" className="submit-button login-button" /> */}
+          </ReactCardFlip>
         </div>
       </form>
+
       <div className="form-group">
-        <Link style={{ color: '#C85548' }} to="/user/register">
-          注册账户
-        </Link>
+        {!isLogin
+          ? (
+            <div onClick={onClick} className="to-register">
+              {/* <Link className="to-register" to="/user/register"> */}
+              登录账户
+            </div>
+          ) : (
+            <div onClick={onClick} className="to-register">
+              {/* <Link className="to-register" to="/user/register"> */}
+              注册账户
+            </div>
+          )}
+        {/* </Link> */}
       </div>
     </div>
   // <div className="login-main">
@@ -176,11 +225,29 @@ const Login = (props) => {
 };
 
 const SIGN_IN_MUTATION = gql`
-  mutation SignIn($email: String!, $password: String!) {
-    signInRestaurant(email: $email, password: $password) {
-      authToken
-      refreshToken
-      id
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      user {
+        userId
+      }
+      token
+    }
+  }
+`;
+
+const SIGN_UP_MUTATION = gql`
+  mutation SignUp(
+    $username: String!
+    $password: String!
+  ) {
+    createUser(
+      username: $username
+      password: $password
+    ) {
+      user {
+        userId
+      }
+      token
     }
   }
 `;
@@ -188,14 +255,19 @@ const SIGN_IN_MUTATION = gql`
 export default compose(
   withRouter,
   connect(null, (dispatch) => ({
-    loginUser: (restaurantId) => dispatch({
+    loginUser: (userId) => dispatch({
       type: 'LOGIN_USER',
-      restaurantId,
+      userId,
     }),
   })),
   graphql(SIGN_IN_MUTATION, {
     props: ({ mutate }) => ({
-      signIn: (variables) => mutate({ variables }),
+      login: (variables) => mutate({ variables }),
+    }),
+  }),
+  graphql(SIGN_UP_MUTATION, {
+    props: ({ mutate }) => ({
+      signUp: (variables) => mutate({ variables }),
     }),
   }),
 )(Login);

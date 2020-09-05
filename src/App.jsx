@@ -29,7 +29,7 @@ import Workplace from './components/Workplace';
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql'
+  uri: 'http://localhost:4000/graphql',
 });
 
 const cache = new InMemoryCache({
@@ -51,12 +51,12 @@ const client = new ApolloClient({
 const ProtectedRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
-    render={({ location }) => (sessionStorage.getItem('authToken') ? (
+    render={({ location }) => (sessionStorage.getItem('Authorization') ? (
       <BasicLayout component={component} />
     ) : (
       <Redirect
         to={{
-          pathname: '/user/login',
+          pathname: '/user',
           state: { from: location },
         }}
       />
@@ -69,7 +69,7 @@ const App = () => (
     <PersistGate loading={null} persistor={persistor}>
       <ApolloProvider client={client}>
         <Router>
-          <Route path="/user" component={User} />
+          <Route path="/user" exact component={User} />
           <ProtectedRoute path="/" exact component={Workplace} />
           <ProtectedRoute path="/account/center" component={AccountCenter} />
           <ProtectedRoute path="/account/settings" component={AccountSettings} />

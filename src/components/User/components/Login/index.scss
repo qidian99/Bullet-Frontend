@@ -2,7 +2,7 @@
 
 .login-main {
   width: 368px;
-  margin: 30px auto 50px;
+  margin: 50px auto;
   align-content: center;
   text-align: center;
 
@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: center;
     width: 70%;
-    margin: 20px auto;
+    margin: 20px auto 40px;
 
     .remember-me {
       display: flex;
@@ -83,19 +83,29 @@
 
   .form-group {
     margin-bottom: 30px;
+
+    .to-register {
+      color: #C85548;
+      cursor: pointer;
+      &:hover {
+        color: #313131;
+        // text-shadow: 1px 1px rgba(#C85548, 0.2);
+      }
+    }
   } 
 
   .login-button {
     background-color: #424242;
-    border: 0;
+    margin: auto;
     width: 200px !important;
     border-radius: 25px;
     font-size: 18px;
     font-weight: 600;
-    margin-top: 40px;
     height: 50px;
     color: white;
     @include transition;
+    @include center-content;
+    cursor:pointer;
     // transition: box-shadow 1s;
 
     &:hover {
@@ -106,5 +116,11 @@
     }
   
     cursor: pointer;
+
+    .submit {
+      border: 0;
+      outline: 0;
+      background-color: transparent;
+    }
   }
 }
