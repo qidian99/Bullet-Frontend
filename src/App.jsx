@@ -27,7 +27,7 @@ import BasicLayout from './components/BasicLayout';
 import User from './components/User';
 import Workplace from './components/Workplace';
 import VideoBullets from './components/VideoBullets';
-import ModalView from './components/CreateRoomModal';
+import ModalView from './components/CreateVideoModal';
 
 
 // Create an http link:
