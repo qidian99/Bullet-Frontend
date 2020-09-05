@@ -1,30 +1,22 @@
 import React from 'react';
-import { PlusCircleFilled } from '@ant-design/icons';
+import { LockFilled } from '@ant-design/icons';
 import { Card } from 'antd';
-import './RoomCard.css';
+import { Link } from 'react-router-dom';
+import './index.css';
 
 const RoomCard = ({
   card: {
-    roomName, members, roomAvatar, lastUpdated,
+    roomId, roomName, members, roomAvatar, lastUpdated, roomPublic,
   },
-}) => {
-  if (!roomName) {
-    return (
-      <Card.Grid className="card-empty">
-        <PlusCircleFilled style={{ fontSize: '100px', color: '#BDBDBD' }} />
-      </Card.Grid>
-    );
-  }
-
-  return (
-    <Card.Grid
-      className="card-container"
-    >
+}) => (
+  <Link to={`/room/${roomId}`}>
+    <Card.Grid className="card-container">
       <Card bodyStyle={{ padding: 0 }} bordered={false}>
         <Card.Meta
           title={(
             <div className="card-title">
-              <p style={{ fontSize: 20 }}>{roomName}</p>
+              <p style={{ fontSize: 20, margin: 0, padding: 0 }}>{roomName}</p>
+              {roomPublic ? null : <LockFilled style={{ fontSize: '20px', color: '#BDBDBD' }} />}
             </div>
           )}
         />
@@ -37,7 +29,7 @@ const RoomCard = ({
         </div>
       </Card>
     </Card.Grid>
-  );
-};
+  </Link>
+);
 
 export default RoomCard;

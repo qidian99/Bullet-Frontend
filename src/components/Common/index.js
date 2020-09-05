@@ -1,8 +1,7 @@
 import moment from 'moment';
 
-export { default as MenuCreateForm } from './MenuCreateForm';
-export { default as MenuItemTable } from './MenuItemTable';
 export { default as RoomCard } from './RoomCard';
+export { default as AddCard } from './AddCard';
 export const formatTime = (unixTime) => {
   const time = parseInt(unixTime, 10);
   const minDiff = moment().diff(time, 'minutes');
