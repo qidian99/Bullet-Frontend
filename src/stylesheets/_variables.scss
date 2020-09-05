@@ -1,0 +1,26 @@
+$border-color: #D3D3D3;
+$primary-color: #EF7B30;
+$primary-hover: #c9590f;
+$vwhite: #F7F7F7; /* visual white, mainly for view background */
+$vwhite-bg: #fafafa;
+$vblack: #333333;
+$font-gray: #626262;
+$light-gray: #EAEAEA;
+$gray: #C7C7C7;
+$dark-gray: #777777;
+$select-default: #E5E5E5;
+
+@mixin transition($time: 0.3s) {
+  transition: all $time ease-in-out;
+  -webkit-transition: all $time ease-in-out;
+  -moz-transition: all $time ease-in-out;
+  -ms-transition: all $time ease-in-out;
+  -o-transition: all $time ease-in-out;
+}
+
+@mixin center-content ($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: center;
+  align-items: center;
+}

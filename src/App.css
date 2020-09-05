@@ -6,3 +6,9 @@ body {
 .ant-page-header {
   background-color: #fff;
 }
+
+.ant-layout-footer {
+  background-color: white;
+  padding: 0;
+  margin: 0;
+}

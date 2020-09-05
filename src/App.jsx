@@ -23,14 +23,9 @@ import './App.css';
 
 import AccountCenter from './components/AccountCenter';
 import AccountSettings from './components/AccountSettings';
-import Analysis from './components/Analysis';
 import BasicLayout from './components/BasicLayout';
-import ManageOrder from './components/ManageOrder';
-import Message from './components/Message';
-import NewDeal from './components/NewDeal';
 import User from './components/User';
 import Workplace from './components/Workplace';
-import GoogleSignIn from './components/GoogleSignIn';
 
 // Create an http link:
 const httpLink = new HttpLink({
