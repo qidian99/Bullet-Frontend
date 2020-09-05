@@ -29,7 +29,7 @@ import Workplace from './components/Workplace';
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: 'https://tritonbyte-server.herokuapp.com/graphql',
+  uri: 'http://localhost:4000/',
   credentials: 'same-origin',
 });
 

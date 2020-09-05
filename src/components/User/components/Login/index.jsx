@@ -28,6 +28,19 @@ const LoginMessage = ({ content }) => (
   />
 );
 
+const FormInput = ({
+  name, value, onChange, placeholder, type = 'text',
+}) => (
+  <input
+    type={type}
+    name={name}
+    value={value}
+    className="input-text"
+    onChange={onChange}
+    placeholder={placeholder}
+  />
+);
+
 const Login = (props) => {
   const [submitting, setsubmitting] = useState(false);
   const [status, setstatus] = useState('');
@@ -61,50 +74,62 @@ const Login = (props) => {
       <form onSubmit={handleSubmit}>
         <div className="form-label">
           <EmailIcon className="icon" />
-          <input
+          <FormInput
+            name="email"
+            value={email}
+            onChange={(target) => setEmail(target.value)}
+            placeholder="用户名"
+          />
+          {/* <input
             type="text"
             name="email"
             value={email}
             className="input-text"
             onChange={(target) => setEmail(target.value)}
             placeholder="用户名"
-          />
+          /> */}
         </div>
         <div className="form-label">
           <LockIcon className="icon" />
-          <input
+          <FormInput
+            type="password"
+            name="password"
+            value={password}
+            onChange={(target) => setPassword(target.value)}
+            placeholder="密码"
+          />
+          {/* <input
             type="password"
             name="password"
             value={password}
             className="input-text"
             onChange={setPassword}
             placeholder="密码"
-          />
+          /> */}
         </div>
-        <div className="forgot-password">
-          <a>Forgot password?</a>
-        </div>
-        <div className="remember-me">
-          <input
-            name="remember"
-            type="checkbox"
-            checked={false}
-            className="check-box"
-            readOnly
-          />
-          Remember me
+        <div className="actions-container">
+          <div className="remember-me">
+            <input
+              name="remember"
+              type="checkbox"
+              checked={false}
+              className="check-box"
+              readOnly
+            />
+            自动登录
+          </div>
+          <div className="forgot-password">
+            <a>忘记密码</a>
+          </div>
         </div>
         <div className="form-group">
           <input type="submit" value="Sign In" className="submit-button login-button" />
         </div>
       </form>
       <div className="form-group">
-        <div>
-          Don&apos;t have an account yet?
-        </div>
-        <a style={{ color: '#C85548' }}>
-          Sign Up
-        </a>
+        <Link style={{ color: '#C85548' }} to="/user/register">
+          注册账户
+        </Link>
       </div>
     </div>
   // <div className="login-main">
