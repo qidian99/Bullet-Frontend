@@ -16,3 +16,7 @@ body {
 .ant-card-grid-hoverable {
   cursor: pointer;
 }
+
+.anticon svg {
+  fill: gray;
+}

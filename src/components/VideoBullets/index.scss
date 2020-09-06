@@ -3,8 +3,7 @@
 .video-bullets-container {
   margin: 10px auto;
   width: 80%;
-  height: 100%;
-  padding: 6% 8% 6% 2%;
+  padding: 6% 4% 6% 4%;
   background-color: white;
   border-radius: 16px;
   box-shadow: 0px 10px 15px #E0E6E7;
@@ -13,7 +12,17 @@
     display: grid;
     grid-template-columns: 15% 20% 65%;
     font-size: 16px;
-    font-weight: bold;
+    padding: 0.5%;
+    background-color: white;
+    cursor: pointer;
+    @include transition;
+
+    &:hover {
+      background-color: rgba(#132A54, 0.1);
+      @include transition;
+      border-radius: 10px;
+    }
+    // font-weight: bold;
 
     .time {
       color: #A6A6A6;
@@ -22,6 +31,7 @@
 
     .sender {
       color: $vblack;
+      font-weight: bold;
     }
 
     .text {
@@ -29,12 +39,5 @@
       font-size: 14px;
       color: $vblack;
     }
-  }
-
-  .connector {
-    height: 30px;
-    width: 2px;
-    background-color: $light-gray;
-    justify-self: center;
   }
 }

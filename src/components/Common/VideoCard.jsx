@@ -24,7 +24,10 @@ const BulletPreview = ({
       >
         {username}
       </p>
-      <p style={{ padding: 0, margin: 0, color: '#818181' }}>
+      <p style={{
+        padding: 0, margin: 0, color: '#818181', fontSize: 12,
+      }}
+      >
         {formatTime(createdAt)}
       </p>
     </div>
@@ -39,10 +42,10 @@ const BulletPreview = ({
 
 const VideoCard = ({
   card: {
-    videoId, videoName, bullets, videoAvatar, pathname,
+    videoId: resourceId, videoName, bullets, videoAvatar, pathname,
   },
 }) => (
-  <Link to={`${pathname}/video/${videoId}`}>
+  <Link to={`${pathname}/resource/${resourceId}`}>
     <Card.Grid className="card-container" style={{ padding: 0, height: 400 }}>
       <div className="video-card-container">
         <div className="video-card-image">

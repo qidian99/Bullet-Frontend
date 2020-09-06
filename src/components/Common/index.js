@@ -25,3 +25,4 @@ export const formatTime = (unixTime) => {
 export { default as CustomModal } from './CustomModal/index';
 export { default as DropDownSelect } from './CustomModal/DropDownSelect';
 export { default as FormInput } from './CustomModal/FormInput';
+export { default as Spinner } from './Spinner';

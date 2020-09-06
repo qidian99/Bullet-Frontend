@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom';
 import AddCard from '../Common/AddCard';
 
 const GroupCreateForm = ({
-  visible, onCreate, onCancel, friends,
+  visible, onCreate, onCancel, friends, submitting,
 }) => {
   const [form] = Form.useForm();
   return (
@@ -30,6 +30,7 @@ const GroupCreateForm = ({
             console.log('Validate Failed:', info);
           });
       }}
+      confirmLoading={submitting}
     >
       <Form
         form={form}
@@ -46,6 +47,18 @@ const GroupCreateForm = ({
             {
               required: true,
               message: 'Please input the title of collection!',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="avatar"
+          label="Cover Image (Optional)"
+          rules={[
+            {
+              required: false,
+              message: 'Please paste an image url.',
             },
           ]}
         >
@@ -85,16 +98,20 @@ const GroupPage = ({
   currentUser = { friends: [] }, createRoom, extraStyle, refetch,
 }) => {
   const [visible, setVisible] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const onCreate = async (values) => {
+    setSubmitting(true);
     console.log('Received values of form: ', values);
     const formData = {
       alias: values.alias,
       users: JSON.stringify([...(values.users || []), currentUser.userId]),
       admins: JSON.stringify([currentUser.userId]),
       public: values.modifier === 'public',
+      avatar: values.avatar,
     };
-    const { data: { createRoom: room } } = await createRoom(formData);
+    const { data: { createRoomWithoutInvitation: room } } = await createRoom(formData);
+    setSubmitting(false);
     console.log(room);
     setVisible(false);
     refetch();
@@ -110,6 +127,7 @@ const GroupPage = ({
           setVisible(false);
         }}
         friends={currentUser.friends}
+        submitting={submitting}
       />
     </div>
   );
@@ -121,12 +139,14 @@ const CREATE_ROOM_MUTATION = gql`
     $users: JSON!
     $admins: JSON!
     $public: Boolean
+    $avatar: String
   ) {
-    createRoom(
+    createRoomWithoutInvitation(
       alias: $alias
       users: $users
       admins: $admins
       public: $public
+      avatar: $avatar
     ) {
       roomId
       widgets

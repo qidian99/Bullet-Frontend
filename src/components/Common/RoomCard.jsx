@@ -24,7 +24,7 @@ const RoomCard = ({
           <img src={roomAvatar || 'https://esportsobserver.com/wp-content/uploads/2020/04/Bilibili-Investment.jpg'} alt="room avatar" width="100%" />
         </div>
         <div className="card-text">
-          <p style={{ color: '#4F4F4F' }}>{`${members} ${members > 1 ? 'people' : 'person'}`}</p>
+          <p style={{ color: '#4F4F4F' }}>{`${members} ${members > 1 ? 'members' : 'member'}`}</p>
           <p style={{ color: '#4F4F4F' }}>{lastUpdated}</p>
         </div>
       </Card>

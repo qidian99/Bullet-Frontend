@@ -8,7 +8,7 @@ import { compose } from 'redux';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import 'moment/locale/zh-cn';
-import { formatTime } from '../Common';
+import { formatTime, Spinner } from '../Common';
 import RoomCard from '../Common/RoomCard';
 import ModalView from '../CreateRoomModal';
 import './index.css';
@@ -26,15 +26,18 @@ const Workplace = ({ rooms, loading, refetch }) => {
 
   return (
     <div className="container">
-      <Row gutter={[16, 24]}>
-        {!loading ? cards.map((card) => (
-          <Col xl={8} lg={12} md={24} sm={24} xs={24}>
-            {card.roomId
-              ? <RoomCard card={card} />
-              : <ModalView extraStyle={{ height: 320 }} refetch={refetch} />}
-          </Col>
-        )) : null}
-      </Row>
+      {loading ? <Spinner />
+        : (
+          <Row gutter={[16, 24]}>
+            {!loading ? cards.map((card) => (
+              <Col xl={8} lg={12} md={24} sm={24} xs={24}>
+                {card.roomId
+                  ? <RoomCard card={card} />
+                  : <ModalView extraStyle={{ height: 320 }} refetch={refetch} />}
+              </Col>
+            )) : null}
+          </Row>
+        )}
     </div>
   );
 };

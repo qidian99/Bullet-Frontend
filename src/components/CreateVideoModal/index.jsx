@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom';
 import AddCard from '../Common/AddCard';
 
 const VideoCreateForm = ({
-  visible, onCreate, onCancel,
+  visible, onCreate, onCancel, submitting,
 }) => {
   const [form] = Form.useForm();
   return (
@@ -30,6 +30,7 @@ const VideoCreateForm = ({
             console.log('Validate Failed:', info);
           });
       }}
+      confirmLoading={submitting}
     >
       <Form
         form={form}
@@ -52,8 +53,8 @@ const VideoCreateForm = ({
           <Input />
         </Form.Item>
         <Form.Item
-          name="url"
-          label="Video Link (Optional)"
+          name="avatar"
+          label="Video image (Optional)"
         >
           <Input />
         </Form.Item>
@@ -67,16 +68,19 @@ const VideoCreateForm = ({
 
 const VideoPage = ({ createVideo, refetch, roomId }) => {
   const [visible, setVisible] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const onCreate = async (values) => {
+    setSubmitting(true);
     const formData = {
       roomId,
       name: values.name,
       description: values.description,
-      url: values.url,
+      avatar: values.avatar,
     };
     const { data: { createResource: video } } = await createVideo(formData);
     console.log('Created video', video);
+    setSubmitting(false);
     setVisible(false);
     refetch();
   };
@@ -90,6 +94,7 @@ const VideoPage = ({ createVideo, refetch, roomId }) => {
         onCancel={() => {
           setVisible(false);
         }}
+        submitting={submitting}
       />
     </div>
   );
@@ -100,13 +105,13 @@ const CREATE_VIDEO_MUTATION = gql`
     $roomId: ID!
     $name: String!
     $description: String
-    $url: String
+    $avatar: String
   ) {
     createResource(
       roomId: $roomId
       name: $name
       description: $description
-      url: $url
+      avatar: $avatar
     ) {
       resourceId
       name
